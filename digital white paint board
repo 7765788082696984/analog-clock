@@ -1,0 +1,118 @@
+from tkinter import *
+from tkinter.colorchooser import askcolor
+from tkinter import ttk
+import tkinter as tk
+
+root = Tk()
+root.title("White Board")
+root.geometry("1050x570+150+50")
+root.configure(bg="#f2f3f5")
+root.resizable(False,False)
+
+current_x=0
+current_y=0
+color="black"
+
+def locate_xy(work):
+    global current_y,current_x
+    current_x = work.x
+    current_y = work.y
+    
+def addLine(work):
+    global current_y,current_x
+    canvas.create_line((current_x,current_y,work.x,work.y),width=get_current_value(),fill=color)
+    current_x = work.x
+    current_y = work.y
+    
+def show_color(new_color):
+    global color
+    color = new_color
+
+def new_canvas():
+    canvas.delete("all")
+    color_palete()
+#load images
+logo=PhotoImage(file="C:\\Users\\hp\\Downloads\\art-and-design.png")
+root.iconphoto(False,logo)
+
+color_panel =PhotoImage(file="C:\\Users\\hp\\Downloads\\colorpanel new12.png")
+Label(root,image=color_panel,bg="grey").place(x=5,y=10)
+
+eraser = PhotoImage(file="C:\\Users\\hp\\Pictures\\eraser 11.png")
+Button(root,image=eraser,bg="#ffffff",command=new_canvas).place(x=8,y=520)
+
+colors = Canvas(root,bg="#f2f3f5",width=30,height=450,border=10,bd=0)
+colors.place(x=7,y=18)
+
+#Board
+canvas = Canvas(root,bg="white",width=930,height=500,cursor="hand2")
+canvas.place(x=100,y=10)
+
+canvas.bind("<Button-1>",locate_xy)
+canvas.bind("<B1-Motion>",addLine)
+
+#fill color in color panel
+def color_palete():
+    id=colors.create_rectangle((10,10,25,25),fill="red")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("red"))
+    
+    id=colors.create_rectangle((10,40,25,55),fill="yellow")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("yellow"))
+    
+    id=colors.create_rectangle((10,70,25,85),fill="blue")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("blue"))
+    
+    id=colors.create_rectangle((10,100,25,115),fill="pink")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("pink"))
+    
+    id=colors.create_rectangle((10,130,25,145),fill="green")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("green"))
+    
+    id=colors.create_rectangle((10,160,25,175),fill="white")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("white"))
+    
+    id=colors.create_rectangle((10,190,25,205),fill="grey")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("grey"))
+    
+    id=colors.create_rectangle((10,220,25,235),fill="black")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("black"))
+    
+    id=colors.create_rectangle((10,250,25,265),fill="purple")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("purple"))
+    
+    id=colors.create_rectangle((10,280,25,295),fill="brown")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("brown"))
+    
+    id=colors.create_rectangle((10,310,25,325),fill="aqua")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("aqua"))
+    
+    id=colors.create_rectangle((10,340,25,355),fill="light blue")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("light blue"))
+    
+    id=colors.create_rectangle((10,370,25,385),fill="silver")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("silver"))
+    
+    id=colors.create_rectangle((10,400,25,415),fill="lime")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("lime"))
+    
+    id=colors.create_rectangle((10,430,25,445),fill="gold")
+    colors.tag_bind (id,"<Button-1>",lambda x: show_color("gold"))
+    
+color_palete()
+
+#add slider
+current_value = tk.DoubleVar()
+
+def get_current_value():
+    return'{: .2f}'.format(current_value.get())
+
+def slider_changed(event):
+    value_label.configure(text=get_current_value())
+    
+slider = ttk.Scale(root,from_=0,to=100,orient="horizontal",command=slider_changed,variable=current_value)
+slider.place(x=75,y=518)
+
+value_label = ttk.Label(root,text=get_current_value())
+value_label.place(x=75,y=545)
+
+root.mainloop()
